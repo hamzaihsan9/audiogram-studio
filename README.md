@@ -2,7 +2,10 @@
 
 > **A high-performance, 100% client-side web application for transforming audio and podcasts into viral social media video snippets with live soundwave visualizers and animated karaoke subtitles.**
 
+![WavePulse Studio Interface Preview](./preview.png)
+
 ---
+
 
 ## 🌟 Key Highlights & Engineering Features
 
