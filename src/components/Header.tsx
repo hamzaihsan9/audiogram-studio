@@ -63,8 +63,9 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </div>
             <p className="text-xs text-slate-400 font-medium hidden sm:block">
-              In-Browser Audiogram & Social Video Clip Generator
+              Client-Side Audiogram & Social Video Clip Generator
             </p>
+
           </div>
         </div>
 

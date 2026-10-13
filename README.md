@@ -1,120 +1,117 @@
-# 🎙️ WavePulse Studio — In-Browser Audiogram & Social Video Clip Generator
+# WavePulse Studio
 
-> **A high-performance, 100% client-side web application for transforming audio and podcasts into viral social media video snippets with live soundwave visualizers and animated karaoke subtitles.**
+A client-side web application for generating video audiograms and social clips from audio files with real-time waveform visualizers and synchronized subtitles.
 
 ![WavePulse Studio Interface Preview](./preview.png)
 
 ---
 
+## Overview
 
-## 🌟 Key Highlights & Engineering Features
+WavePulse Studio is built entirely around browser-native APIs. All audio analysis, waveform rendering, subtitle synchronization, and video encoding execute client-side without relying on remote servers or FFmpeg backend workers.
 
-* **⚡ 100% In-Browser Media Pipeline**: No cloud backend, FFmpeg server, or external processing required. All audio synthesis, waveform analysis, and video encoding happen client-side using native Web APIs.
-* **🎵 Native Web Audio API Engine**:
-  * Real-time frequency and time-domain signal extraction using `AudioContext` and `AnalyserNode` (512 FFT bins with 0.82 smoothing constant).
-  * Procedural audio synthesizer generating multi-instrumental lo-fi beats, synthwave chords, and ambient soundscapes via `OfflineAudioContext`.
-  * Lossless 16-bit PCM WAV slicing directly from `AudioBuffer` in pure TypeScript.
-* **🎨 60 FPS Canvas 2D Visualizer Engine**:
-  * **5 Dynamic Visualizer Modes**:
-    1. *Frequency Bars / Equalizer* (Rounded caps, responsive gradients)
-    2. *Fluid Harmonic Wave* (Bézier curves with harmonic ribbons)
-    3. *Circular Radial Halo* (360° frequency rays around cover art)
-    4. *Retro LED Matrix* (Segmented display with decay hold)
-    5. *Neon Capsule Pulse* (Modern pill audio bars)
-* **🔥 Dynamic Subtitle & Karaoke Engine**:
-  * Word-level animated highlight & bounce effects (TikTok / Reels style).
-  * 4 Subtitle visual styles: *Reels Pop*, *Clean Frosted Pill*, *Boxed*, and *Minimal Ghost*.
-  * Interactive subtitle timeline editor with cue addition, splitting, and playhead sync.
-  * SRT & WebVTT import/export engine.
-* **📐 Multi-Aspect Ratio Social Studio**:
-  * **9:16 Vertical** (TikTok, Instagram Reels, YouTube Shorts)
-  * **1:1 Square** (Instagram Feed, LinkedIn, Twitter/X)
-  * **16:9 Landscape** (YouTube, Twitter video, Desktop web)
-  * Multi-stop mesh gradients, blurred album artwork backdrops, custom cover artwork scaling, and customizable header badges.
-* **🎥 Hardware-Accelerated Video & Audio Export**:
-  * Captures live canvas rendering at 60 FPS using `HTMLCanvasElement.captureStream(60)`.
-  * Merges canvas video with `MediaStreamAudioDestinationNode` from the Web Audio graph.
-  * Encodes to high-bitrate WebM / MP4 video via `MediaRecorder` API with live render progress and confetti celebration.
-* **🎙️ Voice Note Recording**: Direct browser microphone capture via `navigator.mediaDevices.getUserMedia`.
-* **⌨️ Full Keyboard Navigation**: Space to play/pause, `[` and `]` to set In/Out trim markers, arrow keys for frame stepping, `L` to loop, `M` to mute.
+## Key Features
+
+* **Client-Side Media Pipeline**: Complete audio decoding, playback synchronization, and video compilation execute directly within the browser runtime.
+* **Web Audio API Integration**:
+  * Real-time frequency and time-domain analysis via `AudioContext` and `AnalyserNode` (512 FFT bins, 0.82 smoothing constant).
+  * Built-in multi-track audio synthesis via `OfflineAudioContext` for instant local playback without external asset requests.
+  * 16-bit PCM WAV audio slicing directly from decoded `AudioBuffer` data.
+* **Canvas 2D Visualizer Engine (60 FPS)**:
+  * Five configurable visualization modes: Frequency Bars, Continuous Wave, Radial Halo, Segmented LED Matrix, and Capsule Pulse.
+  * Real-time parameter controls for frequency sensitivity, bar density, and vertical placement.
+* **Synchronized Subtitles and Captions**:
+  * Word-level timing detection and active word highlight animations.
+  * Multiple visual styles including high-contrast outline, boxed card, and frosted capsule.
+  * Interactive subtitle timeline editor supporting cue splitting, duration adjustments, and playhead snapping.
+  * Parser and serializer for SRT and WebVTT subtitle files.
+* **Multi-Aspect Ratio Layouts**:
+  * Presets for 9:16 (vertical mobile video), 1:1 (square social posts), and 16:9 (horizontal widescreen).
+  * Background customization supporting multi-stop CSS gradients, solid colors, and blurred album artwork backdrops.
+* **Video and Audio Export**:
+  * Hardware-accelerated canvas capture at 60 FPS using `HTMLCanvasElement.captureStream()`.
+  * Audio multiplexing via `MediaStreamAudioDestinationNode`.
+  * Video encoding using the `MediaRecorder` API with customizable bitrate settings.
+  * Instant exports for 16-bit PCM WAV audio segments and high-resolution PNG cover frames.
+* **Microphone Input**: Direct voice recording using the `MediaDevices` API (`getUserMedia`).
+* **Keyboard Navigation**: Dedicated shortcuts for playback control, trim points, frame stepping, and aspect ratio toggles.
 
 ---
 
-## 🏗️ System Architecture
+## Architecture
 
 ```
-[ User Audio File / Mic / Synthesizer ]
-                 │
-                 ▼
-       ┌──────────────────┐
-       │   AudioContext   │
-       └─────────┬────────┘
-                 │
-       ┌─────────┴─────────┐
-       ▼                   ▼
-┌──────────────┐   ┌───────────────┐
-│ AnalyserNode │   │ MediaStream   │
-│  (FFT Data)  │   │ Destination   │
-└──────┬───────┘   └───────┬───────┘
-       │                   │
-       ▼ (60 FPS)          │
-┌──────────────┐           │
-│ HTML5 Canvas │           │
-│  (Renderer)  │           │
-└──────┬───────┘           │
-       │ captureStream()   │
-       ▼                   ▼
-┌───────────────────────────────┐
-│         MediaRecorder         │
-│     (WebM / MP4 Video)        │
-└──────────────┬────────────────┘
-               ▼
-   [ Final Downloadable Clip ]
+[ Audio Source: Upload / Microphone / Synthesizer ]
+                         │
+                         ▼
+               ┌───────────────────┐
+               │   AudioContext    │
+               └─────────┬─────────┘
+                         │
+        ┌────────────────┴────────────────┐
+        ▼                                 ▼
+┌───────────────┐               ┌───────────────────┐
+│ AnalyserNode  │               │    MediaStream    │
+│  (FFT Data)   │               │  AudioDestination │
+└───────┬───────┘               └─────────┬─────────┘
+        │                                 │
+        ▼ (60 FPS)                        │
+┌───────────────┐                         │
+│ Canvas 2D     │                         │
+│ (Render Loop) │                         │
+└───────┬───────┘                         │
+        │ captureStream(60)               │
+        ▼                                 ▼
+┌───────────────────────────────────────────────┐
+│                 MediaRecorder                 │
+│             (WebM / MP4 Encoding)             │
+└───────────────────────┬───────────────────────┘
+                        ▼
+            [ Downloadable Video Clip ]
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## Technology Stack
 
-* **Framework**: React 19 + TypeScript
-* **Build Tool**: Vite 8 & Bun
-* **Styling**: Tailwind CSS v4 (Glassmorphic dark studio theme)
-* **Icons & Animation**: Lucide React, Canvas Confetti
-* **APIs Used**:
-  * `Web Audio API` (`AudioContext`, `AnalyserNode`, `OfflineAudioContext`, `MediaStreamAudioDestinationNode`)
-  * `HTML5 Canvas 2D API`
-  * `MediaStream Recording API` (`MediaRecorder`)
-  * `MediaDevices API` (`getUserMedia`)
+* **UI Framework**: React 19, TypeScript
+* **Styling**: Tailwind CSS v4
+* **Build System**: Vite 8, Bun
+* **Icons**: Lucide React
+* **Browser APIs**:
+  * Web Audio API (`AudioContext`, `AnalyserNode`, `OfflineAudioContext`, `MediaStreamAudioDestinationNode`)
+  * HTML5 Canvas 2D API
+  * MediaStream Recording API (`MediaRecorder`)
+  * MediaDevices API (`getUserMedia`)
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-Make sure you have [Bun](https://bun.sh) or [Node.js](https://nodejs.org) installed.
 
-### Installation & Run
+* [Bun](https://bun.sh) (recommended) or [Node.js](https://nodejs.org) (v18+)
+
+### Installation
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone git@github.com:hamzaihsan9/audiogram-studio.git
 cd audiogram-studio
 
 # Install dependencies
 bun install
 
-# Start local development server
+# Start development server
 bun dev
 ```
 
-Visit `http://localhost:5173` to explore the studio!
+The application will be accessible at `http://localhost:5173`.
 
----
-
-## 🧪 Production Build
+### Production Build
 
 ```bash
-# Type check and build optimized bundle
+# Type check and generate production bundle
 bun run build
 
 # Preview production build locally
@@ -123,21 +120,22 @@ bun run preview
 
 ---
 
-## 💡 Keyboard Shortcuts
+## Keyboard Shortcuts
 
-| Shortcut | Action |
+| Key | Description |
 | :--- | :--- |
-| `Space` | Play / Pause audio |
-| `[` | Set Trim In Point at playhead |
-| `]` | Set Trim Out Point at playhead |
-| `←` / `→` | Step playhead backward / forward 2s |
-| `L` | Toggle Loop region |
-| `M` | Mute / Unmute |
+| `Space` | Play / Pause audio playback |
+| `[` | Set trim start marker to current playhead position |
+| `]` | Set trim end marker to current playhead position |
+| `Left Arrow` | Step playhead backward 2 seconds |
+| `Right Arrow` | Step playhead forward 2 seconds |
+| `L` | Toggle loop playback within trimmed region |
+| `M` | Mute / Unmute audio |
 | `1`, `2`, `3` | Switch aspect ratio (9:16, 1:1, 16:9) |
-| `?` | Toggle shortcuts modal |
+| `?` | Show keyboard shortcuts modal |
 
 ---
 
-## 👤 Author
+## License
 
-Built by **Hamza Ihsan** as a showcase of browser media capabilities and modern frontend engineering.
+MIT License.

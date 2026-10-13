@@ -301,7 +301,7 @@ export const AUDIO_PRESETS: AudioPresetInfo[] = [
     title: 'The AI Engineering Revolution',
     podcast: 'Frontend Architect Talks',
     speaker: 'Alex Rivera & Sam Chen',
-    badge: '🎙️ EPISODE #48',
+    badge: 'EPISODE #48',
     subtitles: [
       { id: 'c1', startTime: 0.5, endTime: 3.8, text: 'Great software is no longer just about writing code.' },
       { id: 'c2', startTime: 4.1, endTime: 7.9, text: 'It is about human taste, craft, and building memorable user experiences.' },
@@ -316,7 +316,7 @@ export const AUDIO_PRESETS: AudioPresetInfo[] = [
     title: 'Late Night High-Flow State',
     podcast: 'Dev Beats & Algorithms',
     speaker: 'DJ Monad',
-    badge: '⚡ FLOW STATE',
+    badge: 'FLOW STATE',
     subtitles: [
       { id: 'c1', startTime: 0.2, endTime: 4.0, text: 'Zero latency. Pure momentum. Enter the coding flow state.' },
       { id: 'c2', startTime: 4.5, endTime: 9.0, text: 'Every line of code is an idea turned into reality.' },
@@ -330,7 +330,8 @@ export const AUDIO_PRESETS: AudioPresetInfo[] = [
     title: 'Lessons from Zero to One',
     podcast: 'The Builder Journey',
     speaker: 'Elena Vance',
-    badge: '💡 FOUNDER SERIES',
+    badge: 'FOUNDER SERIES',
+
     subtitles: [
       { id: 'c1', startTime: 0.5, endTime: 5.0, text: 'The hardest part of building is not the tech stack.' },
       { id: 'c2', startTime: 5.5, endTime: 10.5, text: 'It is staying obsessed with solving the actual customer problem.' },

@@ -168,7 +168,7 @@ export const SubtitleEditor: React.FC<SubtitleEditorProps> = ({
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
             }`}
           >
-            {style === 'reels' ? '🔥 Reels Pop' : style === 'clean-pill' ? '💊 Clean Pill' : style === 'boxed' ? '📦 Boxed' : '✨ Minimal'}
+            {style === 'reels' ? 'Reels Pop' : style === 'clean-pill' ? 'Clean Pill' : style === 'boxed' ? 'Boxed' : 'Minimal'}
           </button>
         ))}
       </div>
